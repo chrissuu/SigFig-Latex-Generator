@@ -3,7 +3,7 @@
 #include <stack>
 #include <string>
 #include <iostream>
-#include <SigFigs.h>
+
 
 using std::cout;
 using std::stack;
@@ -13,12 +13,6 @@ using std::to_string;
 using std::vector;
 
 
-ErrorComputer pow(ErrorComputer base, double exponent) {
-    double val = pow(base.getVal(), exponent);
-    double error = base.getUncertainty() * exponent * pow(base.getVal(), exponent-1);
-
-    return ErrorComputer(val, error);
-}
 
 
 class ErrorComputer
@@ -143,6 +137,13 @@ public:
 
     }
 
+    ErrorComputer operator ^(double const &ot) {
+        SigFigs val = pow(this->val, ot);
+        SigFigs error =  SigFigs(to_string(ot)) * this->uncertainty* pow(this->val, ot-1);
+
+        return ErrorComputer(val, error);
+    }
+
     double getVal(){
         return stod(val.getSVal());
     }
@@ -155,3 +156,31 @@ public:
 
     
 };
+
+
+ErrorComputer pow(ErrorComputer base, double exponent) {
+    double val = pow(base.getVal(), exponent);
+    double error = base.getUncertainty() * exponent * pow(base.getVal(), exponent-1);
+
+    return ErrorComputer(val, error);
+}
+
+// double round_up(double value, int decimal_places)
+// {
+//     const double multiplier = std::pow(10.0, decimal_places);
+//     return std::round(value * multiplier) / multiplier;
+// }
+
+// int main() {
+//     int c = 5;
+//     double val = 174.4973;
+//     for(int i = -c; i<c; i++) {
+//         cout << round_up(val, i) << "\n";
+//     }
+//     // ErrorComputer ec1(103, 0.5);
+//     // ErrorComputer ec2(405, 0.5);
+
+//     // cout <<"Val: " << (ec1 + ec2).getVal();
+//     // cout <<"Uncertainty: " << (ec1 + ec2).getUncertainty();
+
+// }

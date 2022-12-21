@@ -1,4 +1,4 @@
-#include <math.h>
+
 #include <vector>
 #include <stack>
 #include <string>
@@ -76,9 +76,7 @@ int countSigFigs(string s)
     else
     {
         string t("0");
-        // cout << "copy sz: " << countSigFigsAfterDecimalPoint(copy) << "\n";
-        // cout << "substr sz : " << (s.substr(0,in)).size() << "\n";
-        // cout << "in sz : " << in << "\n";
+    
         if (((s.substr(0, in)).size() == 1) && ((s.substr(0, in)) == t))
         {
             return countSigFigsAfterDecimalPoint(copy);
@@ -95,11 +93,13 @@ class SigFigs
 {
 
     string sVal;
+    double val;
 
 public:
     SigFigs(string s = "0")
     {
         sVal = s;
+        //val = stod(sVal);
     }
 
     SigFigs operator+(SigFigs const &ot) const
@@ -122,7 +122,9 @@ public:
         string wholePart = s.substr(0, in + 1);
         string fractionalPart = s.substr(in + 1, s.size()).substr(0, smallestSigFigCount);
 
-        return wholePart + fractionalPart;
+        res.sVal = wholePart + fractionalPart;
+        res.val = stod(res.sVal);
+        return res;
     }
 
     SigFigs operator-(SigFigs const &ot) const
@@ -145,7 +147,9 @@ public:
         string wholePart = s.substr(0, in + 1);
         string fractionalPart = s.substr(in + 1, s.size()).substr(0, smallestSigFigCount);
 
-        return wholePart + fractionalPart;
+        res.sVal = wholePart + fractionalPart;
+        res.val = stod(res.sVal);
+        return res;
     }
 
     SigFigs operator*(SigFigs const &ot) const
@@ -183,6 +187,7 @@ public:
                 res.sVal = to_string(prod).substr(0, smallestSigFigCount + 1);
             }
         }
+        res.val = stod(res.sVal);
 
         return res;
     }
@@ -227,6 +232,7 @@ public:
                 res.sVal = to_string(quot).substr(0, smallestSigFigCount + 1);
             }
         }
+        res.val = stod(res.sVal);
 
         return res;
     }
@@ -248,8 +254,9 @@ public:
         int in = sumstr.find(".");
         string wholePart = sumstr.substr(0, in + 1);
         string fractionalPart = sumstr.substr(in + 1, sumstr.size()).substr(0, smallestSigFigCount);
-
-        return wholePart + fractionalPart;
+        res.sVal = wholePart + fractionalPart;
+        res.val = stod(res.sVal);
+        return res;
     }
     SigFigs operator-(string const &ot) const
     {
@@ -270,7 +277,9 @@ public:
         string wholePart = sumstr.substr(0, in + 1);
         string fractionalPart = sumstr.substr(in + 1, sumstr.size()).substr(0, smallestSigFigCount);
 
-        return wholePart + fractionalPart;
+        res.sVal = wholePart + fractionalPart;
+        res.val = stod(res.sVal);
+        return res;
     }
     SigFigs operator*(string const &ot) const
     {
@@ -311,7 +320,7 @@ public:
                 res.sVal = to_string(quot).substr(0, smallestSigFigCount + 1);
             }
         }
-
+        res.val = stod(res.sVal);
         return res;
     }
     SigFigs operator/(string const &ot) const
@@ -353,6 +362,7 @@ public:
                 res.sVal = to_string(quot).substr(0, smallestSigFigCount + 1);
             }
         }
+        res.val = stod(res.sVal);
 
         return res;
     }
@@ -360,6 +370,11 @@ public:
     string getSVal()
     {
         return sVal;
+    }
+
+    double getVal()
+    {
+        return val;
     }
 };
 
@@ -370,16 +385,17 @@ SigFigs pow(SigFigs base, double exponent)
     return SigFigs(to_string(ret));
 }
 
-int main()
-{
+// int main()
+// {
    
-    // cout << countSigFigs(s);
-    SigFigs a("0.122");
-    SigFigs b("0.139909");
-    SigFigs d("129.45086");
-    string s("0.122");
-    SigFigs c = b/a;
-    SigFigs lam = b/s;
-    cout << c.getSVal() << x
-    cout << lam.getSVal() << x
-}
+//     // cout << countSigFigs(s);
+//     SigFigs a("0.122");
+//     SigFigs b("0.139909");
+//     SigFigs d("129.45086");
+//     string s("0.122");
+//     SigFigs c = b/a;
+//     SigFigs lam = b/s;
+//     cout << c.getSVal() << x
+//     cout << c.getVal() << x
+//     cout << lam.getSVal() << x
+// }
