@@ -27,7 +27,7 @@ string expandAroundIndex(string args, int index) {
     int indexEnd = 0;
     for(int i = index+1; i<args.size(); i++) {
         while(find(copyStoreDelim.begin(), copyStoreDelim.end(),args[i]) ==copyStoreDelim.end()) {
-            indexEnd=i;
+            indexEnd=i; 
         }
     }
 
