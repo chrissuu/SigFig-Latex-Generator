@@ -3,7 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <math.h>
-#include "SigFigs.h"
+#include <SigFigs.h>
+
 using std::cout;
 using std::find;
 using std::pair;

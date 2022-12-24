@@ -1,4 +1,3 @@
-
 #include <vector>
 #include <stack>
 #include <string>
@@ -17,6 +16,26 @@ using std::vector;
 
 #define x "\n";
 
+bool isZero(string args)
+{
+    bool f = false;
+    for (int i = 0; i < args.size(); i++)
+    {
+        if (args[i] == '0')
+        {
+            continue;
+        }
+        else if (args[i] == '.')
+        {
+            continue;
+        }
+        else
+        {
+            f = true;
+        }
+    }
+    return f;
+}
 double round_up(double value, int decimal_places)
 {
     const double multiplier = std::pow(10.0, decimal_places);
@@ -76,7 +95,7 @@ int countSigFigs(string s)
     else
     {
         string t("0");
-    
+
         if (((s.substr(0, in)).size() == 1) && ((s.substr(0, in)) == t))
         {
             return countSigFigsAfterDecimalPoint(copy);
@@ -99,7 +118,7 @@ public:
     SigFigs(string s = "0")
     {
         sVal = s;
-        //val = stod(sVal);
+        // val = stod(sVal);
     }
 
     SigFigs operator+(SigFigs const &ot) const
@@ -166,28 +185,8 @@ public:
         int smallestSigFigCount = sigfig1 > sigfig2 ? sigfig2 : sigfig1;
         int sigfigprod = countSigFigs(to_string(prod));
 
-        int roundDegree = smallestSigFigCount - sigfigprod;
-        for (int i = -roundDegree - 2; i < roundDegree + 2; i++)
-        {
-            string temp = to_string(round_up(prod, i));
-            if (countSigFigs(temp) == smallestSigFigCount)
-            {
-                res.sVal = temp;
-            }
-        }
-
-        if (res.sVal == "0")
-        {
-            if (prod < 1)
-            {
-                res.sVal = to_string(prod).substr(0, smallestSigFigCount + 2);
-            }
-            else
-            {
-                res.sVal = to_string(prod).substr(0, smallestSigFigCount + 1);
-            }
-        }
-        res.val = stod(res.sVal);
+        int roundDegree = smallestSigFigCount - sigfigprod+2;
+        string temp = to_string(round_up(prod, roundDegree));
 
         return res;
     }
@@ -212,27 +211,7 @@ public:
         int sigfigprod = countSigFigs(to_string(quot));
 
         int roundDegree = smallestSigFigCount - sigfigprod;
-        for (int i = -roundDegree - 2; i < roundDegree + 2; i++)
-        {
-            string temp = to_string(round_up(quot, i));
-            if (countSigFigs(temp) == smallestSigFigCount)
-            {
-                res.sVal = temp;
-            }
-        }
-
-        if (res.sVal == "0")
-        {
-            if (quot < 1)
-            {
-                res.sVal = to_string(quot).substr(0, smallestSigFigCount + 2);
-            }
-            else
-            {
-                res.sVal = to_string(quot).substr(0, smallestSigFigCount + 1);
-            }
-        }
-        res.val = stod(res.sVal);
+        string temp = to_string(round_up(quot, roundDegree));
 
         return res;
     }
@@ -300,26 +279,8 @@ public:
         int sigfigprod = countSigFigs(to_string(quot));
 
         int roundDegree = smallestSigFigCount - sigfigprod;
-        for (int i = -roundDegree - 2; i < roundDegree + 2; i++)
-        {
-            string temp = to_string(round_up(quot, i));
-            if (countSigFigs(temp) == smallestSigFigCount)
-            {
-                res.sVal = temp;
-            }
-        }
+        string temp = to_string(round_up(quot, roundDegree));
 
-        if (res.sVal == "0")
-        {
-            if (quot < 1)
-            {
-                res.sVal = to_string(quot).substr(0, smallestSigFigCount + 2);
-            }
-            else
-            {
-                res.sVal = to_string(quot).substr(0, smallestSigFigCount + 1);
-            }
-        }
         res.val = stod(res.sVal);
         return res;
     }
@@ -342,27 +303,9 @@ public:
         int sigfigprod = countSigFigs(to_string(quot));
 
         int roundDegree = smallestSigFigCount - sigfigprod;
-        for (int i = -roundDegree - 2; i < roundDegree + 2; i++)
-        {
-            string temp = to_string(round_up(quot, i));
-            if (countSigFigs(temp) == smallestSigFigCount)
-            {
-                res.sVal = temp;
-            }
-        }
 
-        if (res.sVal == "0")
-        {
-            if (quot < 1)
-            {
-                res.sVal = to_string(quot).substr(0, smallestSigFigCount + 2);
-            }
-            else
-            {
-                res.sVal = to_string(quot).substr(0, smallestSigFigCount + 1);
-            }
-        }
-        res.val = stod(res.sVal);
+        string temp = to_string(round_up(quot, roundDegree));
+        res.sVal = temp;
 
         return res;
     }
@@ -378,24 +321,21 @@ public:
     }
 };
 
-
 SigFigs pow(SigFigs base, double exponent)
 {
     double ret = pow(stod(base.getSVal()), exponent);
     return SigFigs(to_string(ret));
 }
 
-// int main()
-// {
-   
-//     // cout << countSigFigs(s);
-//     SigFigs a("0.122");
-//     SigFigs b("0.139909");
-//     SigFigs d("129.45086");
-//     string s("0.122");
-//     SigFigs c = b/a;
-//     SigFigs lam = b/s;
-//     cout << c.getSVal() << x
-//     cout << c.getVal() << x
-//     cout << lam.getSVal() << x
-// }
+int main()
+{
+
+    // cout << countSigFigs(s);
+    SigFigs a("0.980000");
+    SigFigs b("3.000000");
+    SigFigs d("129.45086");
+    string s("0.122");
+    SigFigs c = a * b;
+    SigFigs lam = b / s;
+    cout << c.getSVal() << x cout << c.getVal() << x cout << lam.getSVal() << x
+}
