@@ -3,7 +3,7 @@
 #include <stack>
 #include <string>
 #include <iostream>
-
+#include "SigFigs.h"
 
 using std::cout;
 using std::stack;
