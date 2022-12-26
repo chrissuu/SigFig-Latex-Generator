@@ -38,7 +38,7 @@ bool isZero(string args)
 }
 double round_up(double value, int decimal_places)
 {
-    const double multiplier = std::pow(10.0, -1 * decimal_places);
+    const double multiplier = std::pow(10.0, decimal_places);
     return std::round(value * multiplier) / multiplier;
 }
 
@@ -108,70 +108,6 @@ int countSigFigs(string s)
     return s.size();
 }
 
-
-void eraseZeros(string &arg)
-{
-
-    arg.erase(arg.find_last_not_of('0') + 1, std::string::npos);
-    // arg.erase(arg.find_last_not_of('.') + 1, std::string::npos);
-}
-int countDigitsAfterDP(string s) {
-    if(s.find(".")==string::npos) {
-        return 0;
-    }
-
-    return s.substr(s.find(".")+1, s.size()).size();
-}
-bool dotExists(vector<string> arg) {
-    bool exists = false;
-    for (auto s: arg){ 
-        if(s.find(".")!=string::npos) {
-            exists = true;
-        }
-    }
-    return exists;
-}
-vector<string> roundPossiblesVector(double value, int actualSigFigsAfterDecimalCount, int sigFigsBeforeDecimalCount)
-{
-    int thisSigFigsAfterDP = countSigFigsAfterDecimalPoint(to_string(value));
-    vector<string> storeRet;
-
-    for (int i = actualSigFigsAfterDecimalCount; i > -sigFigsBeforeDecimalCount - 1; i--)
-    {
-
-        string temp = to_string(round_up(value, i));
-        eraseZeros(temp);
-        double val = round_up(value, i);
-        cout << "I: " << i << "\n";
-        cout << "Temp: " << temp << "\n";
-        cout << "Val: " << val << "\n";
-        
-        if (temp.find(".") != string::npos)
-        {
-            if (countSigFigsAfterDecimalPoint(temp) <= i)
-            {
-                int currCountSigs = countSigFigsAfterDecimalPoint(temp);
-                for (int k = 0; k < i - currCountSigs; k++)
-                {
-                    temp.append("0");
-                }
-            }
-        }
-        storeRet.push_back(temp);
-        cout << "Temp final: " << temp << "\n\n";
-    }
-    
-    
-
-    return storeRet;
-}
-void printVec(vector<string> v)
-{
-    for (auto s : v)
-    {
-        cout << s << "\n";
-    }
-}
 class SigFigs
 {
 
@@ -247,23 +183,10 @@ public:
         double prod = stod(s1) * stod(s2);
 
         int smallestSigFigCount = sigfig1 > sigfig2 ? sigfig2 : sigfig1;
-
         int sigfigprod = countSigFigs(to_string(prod));
-        int sigfigAfterDPProd = countSigFigsAfterDecimalPoint(to_string(prod));
-        int digitsAfterDPProd = countDigitsAfterDP(to_string(prod));
 
-        cout << to_string(prod) << "\n";
-        vector<string> storeRet = roundPossiblesVector(prod, digitsAfterDPProd, sigfigprod - sigfigAfterDPProd);
-        cout << "Smallest sigfig count: " << smallestSigFigCount << "\n";
-        cout << "# sigfigs before dp: " << sigfigprod - sigfigAfterDPProd << "\n";
-        // printVec(storeRet);
-        for (auto s : storeRet)
-        {
-            if (countSigFigs(s) == smallestSigFigCount)
-            {
-                res.sVal = s;
-            }
-        }
+        int roundDegree = smallestSigFigCount - countSigFigs(to_string(sigfigprod))-countSigFigsAfterDecimalPoint(to_string(sigfigprod));
+        string temp = to_string(round_up(prod, roundDegree));
 
         return res;
     }
@@ -354,7 +277,7 @@ public:
 
         int smallestSigFigCount = sigfig1 > sigfig2 ? sigfig2 : sigfig1;
         int sigfigprod = countSigFigs(to_string(quot));
-
+        //5.3 * 7.88 = 41.764 = 42
         int roundDegree = smallestSigFigCount - sigfigprod;
         string temp = to_string(round_up(quot, roundDegree));
 

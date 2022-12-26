@@ -20,6 +20,7 @@ class ErrorComputer
     SigFigs val;
     SigFigs uncertainty;
     vector<string> computationLayers;
+    bool useSigFigs = false;
 
 public:
     ErrorComputer(SigFigs val, SigFigs uncertainty)
